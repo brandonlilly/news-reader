@@ -5,6 +5,8 @@ window.NewsReader = {
   Routers: {},
   initialize: function() {
     console.log('Hello from Backbone!');
+    new NewsReader.Routers.NewsRouter($("#content"));
+    Backbone.history.start();
   }
 };
 
