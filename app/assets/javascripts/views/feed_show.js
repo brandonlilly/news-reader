@@ -2,7 +2,8 @@ NewsReader.Views.FeedShow = Backbone.View.extend({
   template: JST["feed_show"],
 
   events: {
-    'click button': 'refresh'
+    'click button.refresh':  'refresh',
+    'click button.favorite': 'favorite'
   },
 
   initialize: function () {
@@ -24,6 +25,16 @@ NewsReader.Views.FeedShow = Backbone.View.extend({
 
   refresh: function () {
     this.model.fetch();
+  },
+
+  favorite: function () {
+    // $.ajax({
+    //   url: '/api/feeds/' + this.model.id + '/favorites',
+    //   method: 'POST',
+    //   success: function () {
+    //
+    //   }
+    // })
   }
 
 });

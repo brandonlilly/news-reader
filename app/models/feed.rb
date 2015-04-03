@@ -1,15 +1,23 @@
 require 'open-uri'
 
 class Feed < ActiveRecord::Base
+
   has_many :entries, :dependent => :destroy
 
-  def self.find_or_create_by_url(url)
+  has_many :user_feeds, dependent: :destroy, inverse_of: :feed
+  has_many :users, through: :user_feeds
+
+  has_many :favorites, as: :favoritable
+
+  # validates :users, presence: true
+
+  def self.find_or_create_by_url(url, user)
     feed = Feed.find_by_url(url)
     return feed if feed
 
     begin
       feed_data = SimpleRSS.parse(open(url))
-      feed = Feed.create!(title: feed_data.title, url: url)
+      feed = user.feeds.create!(title: feed_data.title, url: url)
       feed_data.entries.each do |entry_data|
         Entry.create_from_json!(entry_data, feed)
       end
@@ -44,4 +52,9 @@ class Feed < ActiveRecord::Base
     end
     entries
   end
+
+  def favorited(user_id)
+    !!self.favorites.where(user_id: current_user.id)
+  end
+
 end

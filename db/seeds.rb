@@ -13,6 +13,10 @@ urls = [
   'http://qz.com/feed/'
 ]
 
+brandon = User.create(username: "brandon", password: "brandon");
+nick = User.create(username: "nickbarry", password: "nickbarry");
+users = [nick, brandon]
+
 urls.each do |url|
-  Feed.find_or_create_by_url url
+  Feed.find_or_create_by_url url, users.sample
 end

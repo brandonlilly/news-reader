@@ -1,10 +1,14 @@
 class Api::FeedsController < ApplicationController
   def index
-    render :json => Feed.all
+    if logged_in?
+      render :json => current_user.feeds
+    else
+      render :json => nil
+    end
   end
 
   def show
-    render :json => Feed.find(params[:id]), include: :latest_entries
+    render :json => Feed.find(params[:id]), include: :latest_entries#, include: :favorited
   end
 
   def create

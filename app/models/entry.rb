@@ -1,6 +1,8 @@
 class Entry < ActiveRecord::Base
   belongs_to :feed
 
+  has_many :favorites, as: :favoritable
+
   def self.create_from_json!(entryData, feed)
     scrub_encoding(entryData)
 
